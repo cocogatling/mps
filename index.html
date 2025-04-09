@@ -11,6 +11,12 @@
     <p id="earnedSoFarDisplay">$$$ Earned so far: $0.00</p>
     <p id="leftToEarnDisplay">$$$ Left to earn: $0.00</p>
 
+    <div style="display: flex; justify-content: center; margin-top: 10px;">
+        <div id="progressContainer" style="width: 100%; max-width: 300px; height: 20px; background-color: #444; border-radius: 10px; overflow: hidden;">
+          <div id="progressBar" style="height: 100%; width: 0%; background-color: #88DD44; border-radius: 10px; transition: width 0.4s ease;"></div>
+        </div>
+      </div>
+
     <button onclick="applyShiftEarnings()">Update</button>
     <hr>
 
@@ -26,6 +32,12 @@
     
     <p id="timePassed">Time Passed: -</p>
     <p id="timeLeft">Time Left: -</p>
+
+    <div style="display: flex; justify-content: center; margin-top: 10px;">
+        <div id="timeLeftBarContainer" style="width: 100%; max-width: 300px; height: 20px; background-color: #444; border-radius: 10px; overflow: hidden;">
+          <div id="timeLeftBar" style="height: 100%; width: 100%; background-color: #BB6688; border-radius: 10px; transition: width 0.4s ease;"></div>
+        </div>
+    </div>
 
     <hr>
 
@@ -54,7 +66,7 @@
     </div>
     
     <hr>
-    <div>Version 0.45</div>
+    <div>Version 0.5</div>
 
     <script src="main.js" charset="utf-8" type="text/javascript"></script>
   </body>

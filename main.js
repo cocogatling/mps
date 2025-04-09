@@ -72,8 +72,12 @@ function updateTimeDisplays() {
   }
 
   document.getElementById("timePassed").textContent = "Time Passed: " + msToTime(timePassedMS);
-  document.getElementById("timeLeft").textContent = "Time Left: " + msToTime(timeLeftMS);
-
+  
+  const percentLeft = ((timeLeftMS / totalShiftMS) * 100).toFixed(0);
+  document.getElementById("timeLeft").textContent = "Time Left: " + msToTime(timeLeftMS) + " (" + percentLeft + "%)";
+  document.getElementById("timeLeftBar").style.width = percentLeft + "%";
+  
+  
   // ✅ Calculate MPM (Money per minute)
   const totalShiftMin = totalShiftMS / 60000;
   const mpm = totalEarnings / totalShiftMin;
@@ -84,9 +88,12 @@ function updateTimeDisplays() {
   const minutesPassed = timePassedMS / 60000;
   const earnedSoFar = roundToNearestFiveCents(minutesPassed * mpm);
   const leftToEarn = roundToNearestFiveCents(Math.max(0, totalEarnings - earnedSoFar));
+  const percentEarned = ((earnedSoFar / totalEarnings) * 100).toFixed(0);
 
-  document.getElementById("earnedSoFarDisplay").textContent = "$$$ Earned so far: $" + earnedSoFar.toFixed(2);
+
+  document.getElementById("earnedSoFarDisplay").textContent = "$$$ Earned so far: $" + earnedSoFar.toFixed(2) + " (" + percentEarned + "%)";
   document.getElementById("leftToEarnDisplay").textContent = "$$$ Left to earn: $" + leftToEarn.toFixed(2);
+  document.getElementById("progressBar").style.width = percentEarned + "%";
 }
 
 // Round to nearest $0.05
