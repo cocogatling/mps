@@ -1,45 +1,57 @@
+let startDate = null;
+let endDate = null;
+let updateInterval = null;
+
 function toggleTimeInputs() {
     const settings = document.getElementById("timeSettings");
     settings.style.display = settings.style.display === "none" ? "block" : "none";
   }
+  
+function saveTimes() {
+const startH = document.getElementById("startHour").value;
+const startMin = document.getElementById("startMin").value;
+const startAmPm = document.getElementById("startAmPm").value;
 
-  function saveTimes() {
-    const startH = document.getElementById("startHour").value;
-    const startMin = document.getElementById("startMin").value;
-    const startAmPm = document.getElementById("startAmPm").value;
+const endH = document.getElementById("endHour").value;
+const endMin = document.getElementById("endMin").value;
+const endAmPm = document.getElementById("endAmPm").value;
 
-    const endH = document.getElementById("endHour").value;
-    const endMin = document.getElementById("endMin").value;
-    const endAmPm = document.getElementById("endAmPm").value;
+// Convert to Date
+function getDateFromInput(hour, min, ampm) {
+    let h = parseInt(hour);
+    let m = parseInt(min);
+    if (ampm === "pm" && h !== 12) h += 12;
+    if (ampm === "am" && h === 12) h = 0;
+    const date = new Date();
+    date.setHours(h, m, 0, 0);
+    return date;
+}
 
-    alert(
-        "Start Time:\n" +
-        "Hour: " + startH + "\n" +
-        "Min: " + startMin + "\n" +
-        "AM/PM: " + startAmPm + "\n\n" +
-        "End Time:\n" +
-        "Hour: " + endH + "\n" +
-        "Min: " + endMin + "\n" +
-        "AM/PM: " + endAmPm
-      );
+startDate = getDateFromInput(startH, startMin, startAmPm);
+endDate = getDateFromInput(endH, endMin, endAmPm);
 
-    if (!isValidTimePart(sh, sm) || !isValidTimePart(eh, em)) {
-      alert("Please enter valid hours (1-12) and minutes (0-59).");
-      return;
-    }
+// Start or restart interval
+if (updateInterval) clearInterval(updateInterval);
+updateTimeDisplays(); // Run immediately once
+updateInterval = setInterval(updateTimeDisplays, 60000); // Then every minute
+}
 
-    const startTime = `${parseInt(sh)}:${sm.padStart(2, '0')}${sap}`;
-    const endTime = `${parseInt(eh)}:${em.padStart(2, '0')}${eap}`;
+function updateTimeDisplays() {
+const now = new Date();
 
-    alert("Start Time: " + startTime + "\nEnd Time: " + endTime);
+let timePassedMS = now - startDate;
+let timeLeftMS = endDate - now;
 
-    document.getElementById("startDisplay").textContent = "Time Started: " + startTime;
-    document.getElementById("endDisplay").textContent = "Time Ending: " + endTime;
+timePassedMS = Math.max(0, timePassedMS);
+timeLeftMS = Math.max(0, timeLeftMS);
 
-    document.getElementById("timeSettings").style.display = "none";
-  }
+function msToTime(ms) {
+    const mins = Math.floor(ms / 60000);
+    const hours = Math.floor(mins / 60);
+    const minutes = mins % 60;
+    return `${hours}h ${minutes}min`;
+}
 
-  function isValidTimePart(hour, min) {
-    const h = parseInt(hour), m = parseInt(min);
-    return h >= 1 && h <= 12 && m >= 0 && m <= 59;
-  }
+document.getElementById("timePassed").textContent = "Time Passed: " + msToTime(timePassedMS);
+document.getElementById("timeLeft").textContent = "Time Left: " + msToTime(timeLeftMS);
+}
