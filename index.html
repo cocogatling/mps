@@ -8,12 +8,21 @@
     <title>mps</title>
   </head>
   <body>
-    <p>$$$ Earned so far: $1</p>
-    <p>$$$ Left to earn: $45</p>
-    <p>$$$ This Shift: $46</p>
+    <p id="earnedSoFarDisplay">$$$ Earned so far: $0.00</p>
+    <p id="leftToEarnDisplay">$$$ Left to earn: $0.00</p>
 
     <hr>
 
+    <p id="mpsDisplay">MPS: $0.00/sec</p>
+
+
+    <p id="thisShiftDisplay">$$$ This Shift: $0.00</p>
+    <label>Input Shift's Earnings:
+        $ <input type="number" id="shiftDollars" placeholder="0" min="0" style="width: 50px;">
+        . <input type="number" id="shiftCents" placeholder="00" min="0" max="99" style="width: 40px;">
+        <button onclick="applyShiftEarnings()">Set</button>
+      </label>
+    
     <p id="timePassed">Time Passed: -</p>
     <p id="timeLeft">Time Left: -</p>
 
@@ -44,7 +53,7 @@
     </div>
     
     <hr>
-    <div>Version 0.1</div>
+    <div>Version 0.2</div>
 
     <script src="main.js" charset="utf-8" type="text/javascript"></script>
   </body>
