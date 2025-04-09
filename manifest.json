@@ -1,6 +1,6 @@
 {
-    "name": "mps",
-    "short_name": "mps",
+    "name": "mpm",
+    "short_name": "mpm",
     "start_url": "index.html",
     "display": "standalone",
     "background_color": "#000000",
