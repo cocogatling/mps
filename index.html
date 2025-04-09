@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000">
+    <title>mps</title>
+  </head>
+  <body>
+    <p>$$$ Earned so far: $1</p>
+    <p>$$$ Left to earn: $45</p>
+    <p>$$$ This Shift: $46</p>
+
+    <hr>
+
+    <p>Time Passed: 1h 1min</p>
+    <p>Time Left: 2h 59mins</p>
+
+    <hr>
+
+    <button onclick="toggleTimeInputs()">Set Timings</button>
+
+    <div id="timeSettings" style="display:none;">
+      <label>Time Started:
+        <input type="number" id="startHour" placeholder="hh" min="1" max="12" style="width: 40px;"> :
+        <input type="number" id="startMin" placeholder="mm" min="0" max="59" style="width: 40px;">
+        <select id="startAmPm">
+          <option value="am">am</option>
+          <option value="pm">pm</option>
+        </select>
+      </label>
+      <br>
+      <label>Time Ending:
+        <input type="number" id="endHour" placeholder="hh" min="1" max="12" style="width: 40px;"> :
+        <input type="number" id="endMin" placeholder="mm" min="0" max="59" style="width: 40px;">
+        <select id="endAmPm">
+          <option value="am">am</option>
+          <option value="pm">pm</option>
+        </select>
+      </label>
+      <br>
+      <button onclick="saveTimes()">Save</button>
+    </div>
+    
+    <script src="main.js" charset="utf-8" type="text/javascript"></script>
+  </body>
+</html>

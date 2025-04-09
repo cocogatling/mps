@@ -1,0 +1,29 @@
+/* Default styles for mobile */
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 5vw;  /* Scales text based on screen width (good for mobile) */
+    text-align: center;
+    background-color: #000;
+    color: #fff;
+  }
+  
+  button {
+    font-size: 5vw;
+    padding: 3vw 6vw;
+    margin: 4vw;
+  }
+  
+  /* Media query for desktop */
+  /*@media (min-width: 1000px) {
+    body {
+      font-size: 14px; 
+      padding: 20px;
+    }
+  
+    button {
+      font-size: 14px;  
+      padding: 10px 20px;
+      margin: 10px;
+    }
+  }*/
