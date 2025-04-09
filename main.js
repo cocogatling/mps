@@ -1,18 +1,47 @@
-let startDate = null;
-let endDate = null;
-let updateInterval = null;
-let totalEarnings = 0; // Global
+//Initial Data
+var mData = {
+    startDate: null,
+    endDate: null,
+    totalEarnings: 0, // Global
+    lastTick: Date.now()
+}
+
+const savedData = JSON.parse(localStorage.getItem("mSave"));
+if (savedData !== null) {
+  console.log("Loaded saved shift data:", savedData);
+  mData = savedData;
+
+  totalEarnings = mData.totalEarnings;
+  startDate = new Date(mData.startDate);
+  endDate = new Date(mData.endDate);
+  mData.lastTick = Date.now();
+
+  applySavedDataToUI(); // custom function we'll define next
+
+  updateTimeDisplays(); // show immediately
+  if (updateInterval) clearInterval(updateInterval);
+  updateInterval = setInterval(updateTimeDisplays, 60000); // every minute
+}
+
+function applySavedDataToUI() {
+document.getElementById("thisShiftDisplay").textContent = "$$$ This Shift: $" + totalEarnings.toFixed(2);
+
+// Optional: display saved start/end times (manually format if needed)
+updateTimeDisplays();
+}
 
 function applyShiftEarnings() {
-    const dollars = parseInt(document.getElementById("shiftDollars").value || "0");
-    const cents = parseInt(document.getElementById("shiftCents").value || "0");
-    totalEarnings = dollars + cents / 100;
-  
-    document.getElementById("thisShiftDisplay").textContent = "$$$ This Shift: $" + totalEarnings.toFixed(2);
-  
-    // Trigger live update right after setting earnings
-    updateTimeDisplays();
-  }
+const dollars = parseInt(document.getElementById("shiftDollars").value || "0");
+const cents = parseInt(document.getElementById("shiftCents").value || "0");
+totalEarnings = dollars + cents / 100;
+mData.totalEarnings = totalEarnings;
+mData.lastTick = Date.now();
+
+document.getElementById("thisShiftDisplay").textContent = "$$$ This Shift: $" + totalEarnings.toFixed(2);
+updateTimeDisplays();
+saveMData();
+}
+
 function toggleTimeInputs() {
   const settings = document.getElementById("timeSettings");
   settings.style.display = settings.style.display === "none" ? "block" : "none";
@@ -51,6 +80,14 @@ function saveTimes() {
   if (updateInterval) clearInterval(updateInterval);
   updateTimeDisplays(); // Run immediately once
   updateInterval = setInterval(updateTimeDisplays, 60000); // Then every minute
+
+  startDate = getDateFromInput(startH, startMin, startAmPm);
+  endDate = getDateFromInput(endH, endMin, endAmPm);
+
+  mData.startDate = startDate.toISOString();
+  mData.endDate = endDate.toISOString();
+  mData.lastTick = Date.now();
+  saveMData();
 }
 
 function updateTimeDisplays() {
@@ -92,4 +129,42 @@ function updateTimeDisplays() {
 // Round to nearest $0.05
 function roundToNearestFiveCents(amount) {
   return Math.round(amount * 20) / 20;
+}
+
+var savedGame = JSON.parse(localStorage.getItem("musicSave"));
+if (savedGame !== null) {
+    console.log("Loaded game data:", savedGame);
+    gameData = savedGame;
+
+    const now = Date.now();
+    const offlineTime = (now - gameData.lastTick) / 1000; // in seconds
+    const offlineGain = gameData.mps * offlineTime;
+    gameData.music += offlineGain;
+    gameData.lastTick = now;
+
+    if (offlineGain > 0) {
+        // Format time away
+        const seconds = Math.floor(offlineTime % 60);
+        const minutes = Math.floor((offlineTime / 60) % 60);
+        const hours = Math.floor(offlineTime / 3600);
+        const timeAway =
+            (hours > 0 ? `${hours}h ` : "") +
+            (minutes > 0 ? `${minutes}m ` : "") +
+            `${seconds}s`;
+
+        alert(`You were away for ${timeAway} and gained ${format(offlineGain)} music!`);
+    }
+
+    update("musicMade", `${format(gameData.music)} Music Made`);
+    update("musicAutoMade", `${format(gameData.mps)} Mps`);
+    update("musicBoxesMade", `${format(gameData.musicBoxes)} Music Boxes`);
+    updateMusicBoxButton();
+} else {
+    console.log("No saved game data found.");
+}
+
+
+// Function to save the game state into localStorage
+function saveMData() {
+    localStorage.setItem("mSave", JSON.stringify(mData));  // Save the entire game data object
 }
